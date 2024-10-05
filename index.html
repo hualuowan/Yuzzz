@@ -1,1 +1,106 @@
-<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>my-site</title><script defer="defer" src="/js/chunk-vendors.c1f1bc6f.js"></script><script defer="defer" src="/js/app.c42f5e62.js"></script><link href="/css/app.bf48acab.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but my-site doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #333;
+    }
+
+    .clock {
+        width: 200px;
+        height: 200px;
+        background-color: white;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .hand {
+        height: 8px;
+        background-color: black;
+        position: absolute;
+        left: 50%;
+        top: calc(50% - 4px);
+        transform-origin: left center;
+    }
+
+    .hour-hand {
+        width: 60px;
+        transform: rotate(210deg);
+        animation: hour-move 3660s steps(60) infinite;
+    }
+
+    .minute-hand {
+        width: 90px;
+        transform: rotate(-90deg);
+        animation: minute-move 60s steps(60) infinite;
+    }
+
+    @keyframes minute-move {
+        0% {
+            transform: rotate(-90deg);
+        }
+
+        50% {
+            transform: rotate(90deg);
+        }
+
+        100% {
+            transform: rotate(-90deg);
+        }
+    }
+
+    @keyframes hour-move {
+        0% {
+            transform: rotate(-150deg);
+        }
+
+        50% {
+            transform: rotate(150deg);
+        }
+
+        100% {
+            transform: rotate(-150deg);
+        }
+    }
+</style>
+<div class="clock">
+    <div class="hand hour-hand"></div>
+    <div class="hand minute-hand"></div>
+
+    <script>
+        function permute(list) {
+            let res = {}
+
+            function bfs(tmp, id) {
+                if (id === list.length) {
+                    res[tmp.join('-')] = true
+                    return
+                }
+                for (let i = 0; i < list.length; i++) {
+                    let t = tmp[i]
+                    tmp[i] = tmp[id]
+                    tmp[id] = t
+                    bfs(tmp, id + 1)
+                    t = tmp[i]
+                    tmp[i] = tmp[id]
+                    tmp[id] = t
+                    bfs(tmp, id + 1)
+                }
+            }
+
+            bfs(list, 0)
+            res = Object.keys(res).map(e => e.split('-').map(item => +item))
+            console.log(res)
+        }
+
+        permute([1, 2, 3])
+    </script>
+</div>
+
+</html>
