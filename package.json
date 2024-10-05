@@ -46,6 +46,7 @@
   ],
   "description": "## Project setup ``` yarn install ```",
   "main": "babel.config.js",
-  "author": "",
-  "license": "ISC"
+  "author": "Yuzzz <517292656@qq.com>",
+  "license": "ISC",
+  "repository": "https://github.com/hualuowan/Yuzzz.git"
 }
