@@ -1,1 +1,419 @@
-<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>my-site</title><script defer="defer" src="/js/chunk-vendors.c1f1bc6f.js"></script><script defer="defer" src="/js/app.c42f5e62.js"></script><link href="/css/app.bf48acab.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but my-site doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 10%;
+    }
+
+    #content,
+    #express  {
+        display: block;
+    }
+
+    #btn {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 100px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border: 1px solid #ccc;
+        background-color: aliceblue;
+        border-radius: 20px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1 id="name"></h1>
+        <div id="content"></div>
+        <div id="express"></div>
+        <button id="btn">赛博算卦</button>
+    </div>
+
+    <script>
+        let name = document.querySelector('#name')
+        let content = document.querySelector('#content')
+        let express = document.querySelector('#express')
+        let btn = document.querySelector('#btn')
+
+        let data = [
+            {
+                name: '乾卦(乾为天)',
+                content: '刚健旺盛，发育之功；完事顺利，谨防太强。',
+                express: '得此卦者，天行刚健，自强不息，名利双收之象，宜把握机会，争取成果。'
+            },
+            {
+                name: '坤卦(坤为地)',
+                content: '柔顺和静，厚载之功；静守安顺，妄动招损。',
+                express: '得此卦者，宜顺从运势，以静制动，不宜独立谋事，顺从他人，一起合作，可成大事。'
+            },
+            {
+                name: '屯卦(水雷屯)',
+                content: '万物始生，开始困难；先劳后逸，苦尽甘来。',
+                express: '得此卦者，身处困境，宜守不宜进，须多加辛苦努力，排除困难，方可通达，有初难后解之象。'
+            },
+            {
+                name: '蒙卦(山水蒙)',
+                content: '智慧未开，蒙昧闭塞；犹豫不决，缺乏果断。',
+                express: '得此卦者，智慧犹如童蒙，不辨是非，迷失方向；若能顺贤师良友之教，启其聪明则亨通。'
+            },
+            {
+                name: '需卦(水天需)',
+                content: '坎陷当前，遇阻不进；大器晚成，收成在后。',
+                express: '得此卦者，时机尚未成熟，需要耐心等待，急进反会见凶。'
+            },
+            {
+                name: '讼卦(天水讼)',
+                content: '天高水深，达远不亲；慎谋退守，敬畏无凶。',
+                express: '得此卦者，身心不安，事多不顺，与他人多争诉之事，宜修身养性，谨慎处事。'
+            },
+            {
+                name: '师卦(地水师)',
+                content: '阻力很大，困难很多，处于激烈的竞争状态，要与他人密切合作，谨小慎微，行为果断，切忌盲目妄动，适度即可，注意保全自己。',
+                express: '得此卦者，困难重重，忧心劳众，宜包容别人，艰苦努力，摒除一切困难。'
+            },
+            {
+                name: '比卦(水地比)',
+                content: '水行地上，亲比欢乐；人情亲顺，百事无忧。',
+                express: '得此卦者，可获朋友之助，众人之力，谋事有成，荣显之极。'
+            },
+            {
+                name: '小畜卦(风天小畜)',
+                content: '运势反覆，有口舌之争，但难于短期内解决，须忍耐，静待时机。',
+                express: '得此卦者，力量薄弱，运势反覆，宜蓄养实力，静待时机，急进则有险，凡事须耐心推进。'
+            },
+            {
+                name: '履卦(天泽履)',
+                content: '宜待观动静，勿为小利而动摇自己计划，尤其不得贪得无厌',
+                express: '得此卦者，困难时期，多坎坷不顺，万事不宜急进，须循序渐进，谨慎行事。'
+            },
+            {
+                name: '泰卦(地天泰)',
+                content: '坚持由小而大，循序渐进的原则，事业已达到顺利的境地，更应小心从事，居安思危',
+                express: '得此卦者，否极泰来，鸿运当头，诸事皆顺，但须防乐极生悲。'
+            },
+            {
+                name: '否卦(天地否)',
+                content: '陷入逆境，事业处于衰退阶段，多有不顺利。受小人干扰而不得志，多挫折。',
+                express: '得此卦者，万物闭塞之象，上下不合，诸事不顺，凡事宜忍，须待时运好转而有为。'
+            },
+            {
+                name: '同人卦(天火同人)',
+                content: '人类相亲，与人和同；所求皆得，无不称心。',
+                express: '得此卦者，吉祥如意，与人合作共事更佳，上下同心，谋事有成。'
+            },
+            {
+                name: '大有卦(火天大有)',
+                content: '日丽中天，遍照万物；盛大富有，持盈保泰。',
+                express: '得此卦者，正当好运，事事吉祥，大有收获，但需防物极必反，盛极转衰。'
+            },
+            {
+                name: '谦卦(地山谦)',
+                content: '较为顺利，但不会获暴利，须逐步积累',
+                express: '得此卦者，吉利平安，步步高升。谦虚忍让者前途大好，骄横者必招败。谦受益，满招损。'
+            },
+            {
+                name: '豫卦(雷地豫)',
+                content: '时运已到，应大胆行动，即使发生挫折，也可以很快化险为夷。',
+                express: '得此卦者，天行刚健，自强不息，名利双收之象，宜把握机会，争取成果得此卦者，顺天应时，事事吉祥，可得长辈之助，但须防色难，切不可沉迷于声色欢场之中。'
+            },
+            {
+                name: '随卦(泽雷随)',
+                content: '宜与人合作，可获厚利，忌三心两意，或独断独行',
+                express: '得此卦者，宜随大势，其事可成。凡事与他人多沟通交流，可名利双收。切不可坚持己见，专横者事不成。'
+            },
+            {
+                name: '蛊卦(山风蛊)',
+                content: '诸事不如意，艰难迷惑，宜大胆革新，否则引来内忧外患',
+                express: '得此卦者，艰难迷惑之时，事事不如意；宜大胆革新，奋发图强，艰苦努力，可转危为安。'
+            },
+            {
+                name: '临卦(地泽临)',
+                content: '活水流行，好运方来',
+                express: '得此卦者，好运来到，诸事如意，人情和合，但行事不宜过于急进。'
+            },
+            {
+                name: '观卦(风地观)',
+                content: '市场形势不稳定，正处于变动，应谨慎小心，随时观察动向，从长计议，做好退却的准备。',
+                express: '得此卦者，处身于变化之中，心神不宁，宜多观察入微，待机行事，切勿妄进。'
+            },
+            {
+                name: '噬嗑卦(火雷噬嗑)',
+                content: '诸事阻隔，纷争难免，宜守常规，不为利诱，问题可解决。',
+                express: '得此卦者，事不遂心，纷争难免，诸事被阻，宜坚守常规，不为利诱，可保平安。'
+            },
+            {
+                name: '贲卦(山火贲)',
+                content: '经理精明，须防套牢。',
+                express: '得此卦者，表面风光，内在空虚，多虚少实。宜充实自己，稳重行事，量力而为。'
+            },
+            {
+                name: '剥卦(山地剥)',
+                content: '时运不佳，安心自守。',
+                express: '得此卦者，时运不佳，多有损失，前进有阻，宜顺时而止，安份自守。'
+            },
+            {
+                name: '复卦(地雷复)',
+                content: '已经渡过了困难时期，开始进入积极行动的阶段。',
+                express: '得此卦者，时运好转，顺势而为，谋事可成，但不宜过于急进。'
+            },
+            {
+                name: '无妄卦(天雷无妄)',
+                content: '凡事宜守正，若行为不检者，必招灾祸。',
+                express: '得此卦者，顺其自然，守正道者，诸事皆宜。但行为不检者，必招灾祸。'
+            },
+            {
+                name: '大畜卦(山天大畜)',
+                content: '处事不可好高骛远，宜脚踏实地，可成大业，忌目空一切。',
+                express: '得此卦者，宜坚守正道，脚踏实地，务实行事，方可成就大业。切勿骄傲自满，目空一切。'
+            },
+            {
+                name: '颐卦(山雷颐)',
+                content: '不得急于求成，应谨慎小心，循序渐进',
+                express: '得此卦者，对于言语及饮食，均须谨慎。宜守正道，谨言慎行，心怀阴谋者会招灾祸。'
+            },
+            {
+                name: '大过卦(泽风大过)',
+                content: '操之过急，发展过快，宜收缩调整。',
+                express: '得此卦者，身心不安，事不如意，却又强意而行，大有后悔之时，谨防官非及水险。'
+            },
+            {
+                name: '坎卦(坎为水)',
+                content: '陷入重重艰难险阻之中，险况丛生。',
+                express: '得此卦者，运气不佳，多难危险，事多困阻，宜谨言慎行，退守保安。'
+            },
+            {
+                name: '离卦(离为火)',
+                content: '已快进入顶点，盛极而衰，务必总结经验教训',
+                express: '得此卦者，宜谦虚谨慎，稳步进取，则前途光明。急进及意气用事者必有所损失。'
+            },
+            {
+                name: '咸卦(泽山咸)',
+                content: '市场若不景气，决不可妄动，不可强求，而应静待发展，虚心听取不同意见',
+                express: '得此卦者，宜谦虚待人，则会吉祥如意，谋事可成。但勿为不正当感情而意乱情迷。'
+            },
+            {
+                name: '恒卦(雷风恒)',
+                content: '不得改变常理常道，坚持慎重选择的方向，勿追随潮流。',
+                express: '得此卦者，须立身正道，坚守不易，持续努力，必能亨通。缺少毅力，朝三暮四者则不会成功。'
+            },
+            {
+                name: '遁卦(天山遁)',
+                content: '时运不佳，应考虑退隐',
+                express: '得此卦者，宜退不宜进。退守可以保身，若轻举妄动则会招灾。宜谨言慎行，待机行事。'
+            },
+            {
+                name: '大壮卦(雷天大壮)',
+                content: '处在高涨阶段，形势很好。但决不可逞强，更不可妄动',
+                express: '得此卦者，运势过于强盛，宜心平气和，谨慎行事，否则必生过失。'
+            },
+            {
+                name: '晋卦(火地晋)',
+                content: '吉星高照,前进中的挫折不可免，只要动机纯正，必可转危为安',
+                express: '得此卦者，如旭日东升，气运旺盛，收入颇丰，谋事可成，百事如意。'
+            },
+            {
+                name: '明夷卦(地火明夷)',
+                content: '百事阻滞，小人加害，遇事多迷惑，宜守，静待时机而动。',
+                express: '得此卦者，时运不佳，事事劳苦，宜坚守正道，忍耐自重，等待时机。'
+            },
+            {
+                name: '家人卦(风火家人)',
+                content: '平安大吉，与人合作则易成',
+                express: '得此卦者，与人合作共事者会有利，且多有喜事之象，家庭和睦者，能同心协力，发展事业。'
+            },
+            {
+                name: '睽卦(火泽睽)',
+                content: '事业开创困难，处境艰辛。如能志同道合，相互信任，目的可以达到。',
+                express: '得此卦者，运气不佳，水火不容，相互矛盾，诸事难成。'
+            },
+            {
+                name: '蹇卦(水山蹇)',
+                content: '多灾多难，进退两难',
+                express: '得此卦者，身心忧苦，举步维艰，宜守正道，不可妄动，涉险境者会有灾难。'
+            },
+            {
+                name: '解卦(雷水解)',
+                content: '灾难已解，声名大起',
+                express: '得此卦者，能解脱先前之困难，宜把握良机，求谋事业，出外谋事者更佳。'
+            },
+            {
+                name: '损卦(山泽损)',
+                content: '现况诸事不顺，有破财之象，虽先损失，但后反而得益，因祸得福。',
+                express: '得此卦者，损己利人，虽然开始会有所不顺，但付出总会有所回报，因祸得福之象。'
+            },
+            {
+                name: '益卦(风雷益)',
+                content: '勿追求小利，让利于顾客，反而必获丰厚利润，切忌贪心不足',
+                express: '得此卦者，正当好运，奋发图进，得人帮助，能获名利。'
+            },
+            {
+                name: '夬卦(泽天夬)',
+                content: '市场正在走向衰落的状态，不宜大量活动，随时注意转向',
+                express: '得此卦者，大运将过，困难将至，宜提高警惕，谨言慎行。'
+            },
+            {
+                name: '姤卦(天风姤)',
+                content: '市场正从红火的状态走向衰危，及早脱身为妙',
+                express: '得此卦者，阴长阳衰，诸事不顺，宜谨慎行事，更应注意桃色纠纷。'
+            },
+            {
+                name: '萃卦(泽地萃)',
+                content: '盛则必衰，切勿骄傲，谨慎小心为好。',
+                express: '得此卦者，运气大好，能得到贵人的帮助，获利丰厚，无往不利。'
+            },
+            {
+                name: '升卦(地风升)',
+                content: '大地春回，日益高升',
+                express: '得此卦者，运气升腾，诸事皆积极向上发展，谋事有成，名利双收。'
+            },
+            {
+                name: '困卦(泽水困)',
+                content: '诸事不如意，所谓龙游浅水遭虾戏。',
+                express: '得此卦者，陷入困境，事事不如意，宜坚守正道，等待时机。'
+            },
+            {
+                name: '井卦(水风井)',
+                content: '故凡事不能进取主动，又缺乏冲劲，不如处之泰然更有利。',
+                express: '得此卦者，天行刚健，自强不息，名利双收之象，宜把握机会，争取成果得此卦者，宜修身养性，顺其自然，泰然处之，静有利，动则凶。'
+            },
+            {
+                name: '革卦(泽火革)',
+                content: '市场竞争十分激烈。为了立于不败之地，一定要敢于大胆求新',
+                express: '得此卦者，凡事均在变动之中，宜去旧立新，以应革新之象，则会吉祥。'
+            },
+            {
+                name: '鼎卦(火风鼎)',
+                content: '时运仍佳，事业可成，但诸事不宜迟滞，及防有诉讼之累。',
+                express: '得此卦者，时运正佳，能得到朋友的帮助，取得不错的成就。与人合伙共事更佳。'
+            },
+            {
+                name: '震卦(震为雷)',
+                content: '处于不顺利、甚至面临危险的局面，对此务必提高警惕，有备方可无患',
+                express: '得此卦者，奋发振作，大可有为，但表面风光，内恐有难，宜谨言慎行，以免损失。'
+            },
+            {
+                name: '艮卦(艮为山)',
+                content: '进入停滞不前的状态，切勿盲目冒进，而宜适时停止，进入安静退守',
+                express: '得此卦者，前路受阻，不宜妄进，宜守待机。'
+            },
+            {
+                name: '渐卦(风山渐)',
+                content: '正处在稳步向前发展的阶段，要把握时机',
+                express: '得此卦者，逐步开运，凡事宜循序渐进，则谋事可成，不宜急进，性急则败。'
+            },
+            {
+                name: '归妹卦(雷泽归妹)',
+                content: '处事有违常理正道，先得其益，但随后祸事百端。',
+                express: '得此卦者，困难之时，做事有违常理，灾祸不断。宜明察事理，修身养性，断绝妄念。'
+            },
+            {
+                name: '丰卦(雷火丰)',
+                content: '稍有不慎，破产可能在一夜间',
+                express: '得此卦者，运势正强，谋事可成，名利双收。但不宜过贪，要知足常乐，谨防乐极生悲，损财甚至火险。'
+            },
+            {
+                name: '旅卦(火山旅)',
+                content: '市场行情犹如旅途一样，意想不到的情况，会随时发生。因此，首先应采取慎重的原则，不要冒险。',
+                express: '得此卦者，事多变动，如在异乡，小事可成，大事难成，宜谨守常规。'
+            },
+            {
+                name: '巽卦(巽为风)',
+                content: '波折重重，运势起落浮沉不定',
+                express: '得此卦者，运势起伏不定，宜随机应变，谦虚行事，则可得意外之收获。'
+            },
+            {
+                name: '兑卦(兑为泽)',
+                content: '悲喜交集，有誉有讥，守正道，诸事尚可称意。',
+                express: '得此卦者，多喜庆之事，人情和合，但应坚守正道，否则犯灾。'
+            },
+            {
+                name: '涣卦(风水涣)',
+                content: '市场状况混乱，方向不明，适当的冒险是完全必要的。',
+                express: '得此卦者，初有不顺，但终可解困，凡事宜小心则百事亨通，忌任性放纵。'
+            },
+            {
+                name: '节卦(水泽节)',
+                content: '正处在发展时期，一定要注意切勿冒进',
+                express: '得此卦者，宜安分守己，切忌贪心不足，诸事必须节制，不宜过份，更要戒酒色。'
+            },
+            {
+                name: '中孚卦(风泽中孚)',
+                content: '安于本业，久之必得。',
+                express: '得此卦者，正直诚信者吉利，会得到朋友的帮助，谋事可成；心存邪念者则凶。'
+            },
+            {
+                name: '小过卦(雷山小过)',
+                content: '行动宜谨慎小心，切勿冒险，尤其不得钻空子。',
+                express: '得此卦者，诸事不利，宜行小事，不宜成大事，更防因自身的过失惹来是非争讼。'
+            },
+            {
+                name: '既济卦(水火既济)',
+                content: '名利双收，成功之象，但须防物极必反，初吉后凶。',
+                express: '得此卦者，事业有成，成功之象，但谨防盛极必衰，宜退守为吉，再进则凶。'
+            },
+            {
+                name: '未济卦(火水未济)',
+                content: '运势颠倒，务必谨慎',
+                express: '得此卦者，运势不通，诸事不能如愿，宜由小及大，稳步进取，要耐心去突破难关，则终可成功。'
+            }
+        ]
+
+        console.log(data.length);
+
+        function getRandom() {
+            return data[Math.floor(Math.random() * 1000 % 64)]
+        }
+
+        async function randomAnimation() {
+
+            var i = 1
+            for (; i < 10;) {
+                await new Promise(res => {
+                    setTimeout(() => {
+                        name.innerHTML = getRandom().name
+                        i++
+                        res()
+                    }, i * 50);
+                })
+            }
+
+            name.innerHTML = getRandom().name
+            content.innerHTML = getRandom().content
+            express.innerHTML = getRandom().express
+        }
+
+
+        btn.addEventListener('click', () => {
+            content.innerHTML = ``
+            express.innerHTML = ``
+            randomAnimation()
+        })
+    </script>
+</body>
+
+</html>
